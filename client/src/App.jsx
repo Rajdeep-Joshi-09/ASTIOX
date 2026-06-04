@@ -1,12 +1,24 @@
-import React from 'react'
-import { Button } from './components/ui/button'
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ClientLayout from "./layout/client/ClientLayout";
+import AdminLayout from "./layout/admin/AdminLayout";
+import AdminHome from "./pages/admin/AdminHome";
+import Home from "./pages/client/Home";
 
 const App = () => {
   return (
-    <div className=''>
-      <Button>Click me!</Button>
-    </div>
-  )
-}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ClientLayout />}>
+          <Route index element={<Home />} />
+        </Route>
 
-export default App
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminHome />}></Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default App;
