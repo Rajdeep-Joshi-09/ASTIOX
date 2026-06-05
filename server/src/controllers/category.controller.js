@@ -2,17 +2,25 @@ const categoryService = require("../services/category.service");
 
 function validateCategory(category) {
   if (!category) {
-    throw new Error("Category required");
+    const err = new Error("Category required");
+    err.statusCode = 400;
+    throw err;
   }
+
   const categoryName = category.trim();
 
-  if (!categoryName.length > 0) {
-    throw new Error("Category required");
+  if (!categoryName.length) {
+    const err = new Error("Category required");
+    err.statusCode = 400;
+    throw err;
   }
 
   if (categoryName.length < 5 || categoryName.length > 50) {
-    throw new Error("Category length must be between 5 to 50");
+    const err = new Error("Category length must be between 5 to 50");
+    err.statusCode = 400;
+    throw err;
   }
+
   return categoryName;
 }
 
