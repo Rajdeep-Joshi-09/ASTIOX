@@ -45,7 +45,7 @@ const createCategory = async (req, res) => {
       },
     });
   } catch (err) {
-    res.status(500).json({
+    res.status(err.statusCode || 500).json({
       message: err.message,
     });
   }
@@ -166,7 +166,7 @@ const updateCategoryController = async (req, res) => {
         message: "No record found on this Id",
       });
     }
-    return res.status(500).json({
+    res.status(err.statusCode || 500).json({
       message: err.message,
     });
   }
