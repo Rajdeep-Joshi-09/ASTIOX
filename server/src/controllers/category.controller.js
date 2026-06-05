@@ -22,6 +22,16 @@ function validateCategory(category, res) {
   return categoryName;
 }
 
+function transformDate(isoDate) {
+  if (!isoDate) return;
+  const date = new Date(isoDate);
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const year = date.getUTCFullYear();
+  const formattedDate = `${day}-${month}-${year}`;
+  return formattedDate;
+}
+
 const createCategory = async (req, res) => {
   try {
     const { categoryName, isStatus } = req.body;
@@ -30,9 +40,43 @@ const createCategory = async (req, res) => {
       category_name,
       is_status: isStatus,
     });
+    const { id, is_status } = category;
     res.status(201).json({
-      Status: true,
+      status: true,
       message: "Category created successfully",
+      data: {
+        id,
+        categoryCreated: category_name,
+        isStatus: is_status === 1 ? "Active" : "Deactive",
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+const getCategory = async (req, res) => {
+  try {
+    const categoryData = await categoryService.getAllCategory();
+    if (!categoryData.length > 0) {
+      return res.status(404).json({
+        message: "No category found",
+      });
+    }
+    const category = categoryData.map((itm) => {
+      return {
+        id: itm.id,
+        categoryName: itm.category_name,
+        isStatus: itm.is_status == 1 ? "Active" : "Deactive",
+        createdDate: transformDate(itm.created_date),
+        updateDate: transformDate(itm.modify_date),
+      };
+    });
+    res.status(200).json({
+      status: true,
+      message: "Category retrived successfully",
       data: category,
     });
   } catch (err) {
@@ -42,6 +86,102 @@ const createCategory = async (req, res) => {
   }
 };
 
+const getCategoryById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(404).json({
+        message: "Id not found",
+      });
+    }
+    const categoryData = await categoryService.getOneCategory(Number(id));
+    if (!categoryData) {
+      return res.status(404).json({
+        message: "There is no such a category found on this Id",
+      });
+    }
+    const { category_name, is_status } = categoryData;
+    res.status(200).json({
+      status: true,
+      message: "Category found",
+      data: {
+        id,
+        categoryName: category_name,
+        isStatus: is_status,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+const deleteCategory = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(404).json({
+        message: "Id not found",
+      });
+    }
+    const result = await categoryService.deleteCategory(id);
+    if (!result) {
+      res.status(404).json({
+        message: "There is no such a category found on this Id",
+      });
+    }
+    res.status(200).json({
+      status: true,
+      message: "Category deleted successfully",
+    });
+  } catch (err) {
+    if (err.code === "P2025") {
+      return res.status(404).json({
+        message: "There is no such a category found on this Id",
+      });
+    }
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
+const updateCategoryController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({
+        message: "Id not found",
+      });
+    }
+    const { categoryName, isStatus } = req.body;
+    let category_name = validateCategory(categoryName, res);
+    const updateCategoryById = await categoryService.updateCategory({
+      id: Number(id),
+      category_name,
+      is_status: Number(isStatus),
+    });
+    res.status(200).json({
+      status: true,
+      message: "Category updated successfully",
+    });
+  } catch (err) {
+    if (err.code === "P2025") {
+      return res.status(404).json({
+        message: "No record found on this Id",
+      });
+    }
+    return res.status(500).json({
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   createCategory,
+  getCategory,
+  getCategoryById,
+  deleteCategory,
+  updateCategoryController,
 };
