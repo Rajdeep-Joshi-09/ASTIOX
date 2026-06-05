@@ -20,9 +20,9 @@ model Todo {
 model Category {
   id Int @id @default(autoincrement())
   is_status Int
-  is_delete Int
+  is_delete Int @default(0)
   category_name String
-  created_date DateTime
-  modify_date DateTime
-  delete_date DateTime
+  created_date DateTime @default(now())
+  modify_date DateTime?
+  delete_date DateTime?
 }

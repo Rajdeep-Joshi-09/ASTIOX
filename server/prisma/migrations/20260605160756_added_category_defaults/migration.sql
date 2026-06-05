@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Category" ALTER COLUMN "is_delete" SET DEFAULT 0,
+ALTER COLUMN "created_date" SET DEFAULT CURRENT_TIMESTAMP,
+ALTER COLUMN "modify_date" DROP NOT NULL,
+ALTER COLUMN "delete_date" DROP NOT NULL;
