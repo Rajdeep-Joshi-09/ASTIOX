@@ -1,23 +1,17 @@
 const categoryService = require("../services/category.service");
 
-function validateCategory(category, res) {
+function validateCategory(category) {
   if (!category) {
-    return res.status(404).json({
-      message: "Category not found",
-    });
+    throw new Error("Category required");
   }
   const categoryName = category.trim();
 
   if (!categoryName.length > 0) {
-    return res.status(404).json({
-      message: "Category not found",
-    });
+    throw new Error("Category required");
   }
 
   if (categoryName.length < 5 || categoryName.length > 50) {
-    return res.status(400).json({
-      message: "Category length must be between 5 to 50",
-    });
+    throw new Error("Category length must be between 5 to 50");
   }
   return categoryName;
 }
@@ -35,7 +29,7 @@ function transformDate(isoDate) {
 const createCategory = async (req, res) => {
   try {
     const { categoryName, isStatus } = req.body;
-    let category_name = validateCategory(categoryName, res);
+    let category_name = validateCategory(categoryName);
     const category = await categoryService.createCategory({
       category_name,
       is_status: isStatus,
@@ -156,7 +150,7 @@ const updateCategoryController = async (req, res) => {
       });
     }
     const { categoryName, isStatus } = req.body;
-    let category_name = validateCategory(categoryName, res);
+    let category_name = validateCategory(categoryName);
     const updateCategoryById = await categoryService.updateCategory({
       id: Number(id),
       category_name,
