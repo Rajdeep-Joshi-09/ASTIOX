@@ -59,11 +59,18 @@ const ProductList = () => {
               products.map((item) => (
                 <tr key={item.id} className="border-b border-border/50 hover:bg-muted/30">
                   <td className="px-4 py-3">
-                    {item.productImage ? (
-                      <img src={imageUrl(item.productImage)} alt={item.productName} className="w-10 h-10 rounded-lg object-cover border border-border" />
-                    ) : (
-                      <div className="w-10 h-10 rounded-lg bg-muted border border-border" />
-                    )}
+                    <div className="relative w-10 h-10">
+                      {item.productImage ? (
+                        <img src={imageUrl(item.productImage)} alt={item.productName} className="w-10 h-10 rounded-lg object-cover border border-border" />
+                      ) : (
+                        <div className="w-10 h-10 rounded-lg bg-muted border border-border" />
+                      )}
+                      {(item.images?.length || 0) > 1 && (
+                        <span className="absolute -bottom-1 -right-1 text-[9px] bg-primary text-primary-foreground px-1 rounded">
+                          {item.images.length}
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-3 font-medium">{item.productName}</td>
                   <td className="px-4 py-3 text-muted-foreground">{item.categoryName}</td>

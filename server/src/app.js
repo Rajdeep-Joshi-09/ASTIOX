@@ -7,6 +7,7 @@ const productRoutes = require("./routes/product.routes");
 const menuRoutes = require("./routes/menu.routes");
 const permissionRoutes = require("./routes/permission.routes");
 const dashboardRoutes = require("./routes/dashboard.routes");
+const publicRoutes = require("./routes/public.routes");
 const { protect } = require("../middleware/auth.middleware");
 const userRoutes = require("./routes/user.routes");
 
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/uploads/products", express.static("D:/ASTIOX/uploads/products"));
 
+app.use("/api/public", publicRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/users", protect, userRoutes);
 app.use("/api/category", protect, categoryRoutes);

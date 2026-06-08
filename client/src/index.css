@@ -128,3 +128,97 @@
     @apply font-sans;
     }
 }
+
+/* Storefront HTML product descriptions (light catalog theme) */
+.store-html-content,
+.product-html-content {
+  line-height: 1.75;
+  font-size: 0.95rem;
+}
+.product-html-content h1,
+.product-html-content h2,
+.product-html-content h3,
+.product-html-content h4 {
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  color: inherit;
+}
+.product-html-content h1 { font-size: 1.75rem; }
+.product-html-content h2 { font-size: 1.5rem; }
+.product-html-content h3 { font-size: 1.25rem; }
+.product-html-content p {
+  margin-bottom: 1em;
+}
+.product-html-content ul,
+.product-html-content ol {
+  margin: 1em 0;
+  padding-left: 1.5em;
+}
+.product-html-content ul { list-style-type: disc; }
+.product-html-content ol { list-style-type: decimal; }
+.product-html-content li {
+  margin-bottom: 0.35em;
+}
+.store-html-content a,
+.product-html-content a {
+  color: #007185;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.store-html-content a:hover,
+.product-html-content a:hover {
+  color: #c7511f;
+}
+.product-html-content img {
+  max-width: 100%;
+  border-radius: 0.75rem;
+  margin: 1em 0;
+}
+.store-html-content blockquote,
+.product-html-content blockquote {
+  border-left: 3px solid #c7511f;
+  padding-left: 1em;
+  margin: 1em 0;
+  opacity: 0.85;
+  font-style: italic;
+}
+.store-html-content code,
+.product-html-content code {
+  background: #f0f2f2;
+  padding: 0.15em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+}
+.store-html-content pre,
+.product-html-content pre {
+  background: #f7f7f7;
+  padding: 1em;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+.product-html-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+}
+.store-html-content th,
+.store-html-content td,
+.product-html-content th,
+.product-html-content td {
+  border: 1px solid #ddd;
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+.store-html-content th,
+.product-html-content th {
+  background: #f0f2f2;
+  font-weight: 600;
+}
+.store-html-content hr,
+.product-html-content hr {
+  border: none;
+  border-top: 1px solid #e7e7e7;
+  margin: 1.5em 0;
+}

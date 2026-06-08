@@ -30,6 +30,11 @@ const mapProduct = (item) => ({
   productName: item.product_name,
   productDescription: item.product_description,
   productImage: item.product_image,
+  images: (item.images || []).map((img) => ({
+    id: img.id,
+    imagePath: img.image_path,
+    sortOrder: img.sort_order,
+  })),
   categoryId: item.category_id,
   categoryName: item.category?.category_name,
   collectionId: item.collection_id,
@@ -38,24 +43,39 @@ const mapProduct = (item) => ({
   createdDate: item.created_date,
 });
 
+const parseRemoveIds = (raw) => {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed.map(Number).filter(Boolean) : [];
+  } catch {
+    return [];
+  }
+};
+
+const getImagePaths = (files) =>
+  (files || []).map((f) => f.path.replace(/\\/g, "/"));
+
 const createProduct = async (req, res) => {
   try {
     const { productName, productDescription, categoryId, collectionId, isStatus } =
       req.body;
 
-    const product_name = validateProductName(productName);
-    const category_id = validateId(categoryId, "Category");
-    const collection_id = validateId(collectionId, "Collection");
-    const product_image = req.file ? req.file.path.replace(/\\/g, "/") : null;
+    const imagePaths = getImagePaths(req.files);
+    if (!imagePaths.length) {
+      return res.status(400).json({ message: "At least one product image is required" });
+    }
 
-    const product = await productService.createProduct({
-      product_name,
-      product_description: productDescription?.trim() || null,
-      product_image,
-      category_id,
-      collection_id,
-      is_status: isStatus !== undefined ? Number(isStatus) : 1,
-    });
+    const product = await productService.createProduct(
+      {
+        product_name: validateProductName(productName),
+        product_description: productDescription || null,
+        category_id: validateId(categoryId, "Category"),
+        collection_id: validateId(collectionId, "Collection"),
+        is_status: isStatus !== undefined ? Number(isStatus) : 1,
+      },
+      imagePaths
+    );
 
     res.status(201).json({
       status: true,
@@ -89,10 +109,7 @@ const getProductById = async (req, res) => {
     res.status(200).json({
       status: true,
       message: "Product found",
-      data: {
-        ...mapProduct(product),
-        isStatus: product.is_status,
-      },
+      data: { ...mapProduct(product), isStatus: product.is_status },
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -101,23 +118,35 @@ const getProductById = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    const { productName, productDescription, categoryId, collectionId, isStatus } =
+    const { productName, productDescription, categoryId, collectionId, isStatus, removeImageIds } =
       req.body;
 
-    const updateData = {
-      id: Number(req.params.id),
-      product_name: validateProductName(productName),
-      product_description: productDescription?.trim() || null,
-      category_id: validateId(categoryId, "Category"),
-      collection_id: validateId(collectionId, "Collection"),
-      is_status: Number(isStatus),
-    };
-
-    if (req.file) {
-      updateData.product_image = req.file.path.replace(/\\/g, "/");
+    const existing = await productService.getOneProduct(req.params.id);
+    if (!existing) {
+      return res.status(404).json({ message: "Product not found" });
     }
 
-    const product = await productService.updateProduct(updateData);
+    const newImagePaths = getImagePaths(req.files);
+    const removeIds = parseRemoveIds(removeImageIds);
+    const remaining = (existing.images || []).filter(
+      (img) => !removeIds.includes(img.id)
+    ).length;
+
+    if (remaining + newImagePaths.length === 0) {
+      return res.status(400).json({ message: "At least one product image is required" });
+    }
+
+    const product = await productService.updateProduct(
+      {
+        id: Number(req.params.id),
+        product_name: validateProductName(productName),
+        product_description: productDescription || null,
+        category_id: validateId(categoryId, "Category"),
+        collection_id: validateId(collectionId, "Collection"),
+        is_status: Number(isStatus),
+      },
+      { newImagePaths, removeImageIds: removeIds }
+    );
 
     res.status(200).json({
       status: true,
@@ -150,4 +179,5 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProduct,
+  mapProduct,
 };

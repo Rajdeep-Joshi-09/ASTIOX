@@ -54,19 +54,30 @@ model Collection {
 }
 
 model Product {
-  id                  Int        @id @default(autoincrement())
+  id                  Int            @id @default(autoincrement())
   product_name        String
   product_description String?
   product_image       String?
   category_id         Int
   collection_id       Int
-  is_status           Int        @default(1)
-  is_delete           Int        @default(0)
-  created_date        DateTime   @default(now())
+  is_status           Int            @default(1)
+  is_delete           Int            @default(0)
+  created_date        DateTime       @default(now())
   modify_date         DateTime?
   delete_date         DateTime?
-  category            Category   @relation(fields: [category_id], references: [id])
-  collection          Collection @relation(fields: [collection_id], references: [id])
+  category            Category       @relation(fields: [category_id], references: [id])
+  collection          Collection     @relation(fields: [collection_id], references: [id])
+  images              ProductImage[]
+}
+
+model ProductImage {
+  id           Int      @id @default(autoincrement())
+  product_id   Int
+  image_path   String
+  sort_order   Int      @default(0)
+  is_delete    Int      @default(0)
+  created_date DateTime @default(now())
+  product      Product  @relation(fields: [product_id], references: [id], onDelete: Cascade)
 }
 
 model Menu {
