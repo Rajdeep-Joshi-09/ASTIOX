@@ -49,7 +49,7 @@ const createCategory = async (req, res) => {
       data: {
         id,
         categoryCreated: category_name,
-        isStatus: is_status === 1 ? "Active" : "Deactive",
+        isStatus: is_status === 1 ? "Active" : "Inactive",
       },
     });
   } catch (err) {
@@ -62,16 +62,11 @@ const createCategory = async (req, res) => {
 const getCategory = async (req, res) => {
   try {
     const categoryData = await categoryService.getAllCategory();
-    if (!categoryData.length > 0) {
-      return res.status(404).json({
-        message: "No category found",
-      });
-    }
     const category = categoryData.map((itm) => {
       return {
         id: itm.id,
         categoryName: itm.category_name,
-        isStatus: itm.is_status == 1 ? "Active" : "Deactive",
+        isStatus: itm.is_status == 1 ? "Active" : "Inactive",
         createdDate: transformDate(itm.created_date),
         updateDate: transformDate(itm.modify_date),
       };

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { setStoredUser } from "@/lib/api";
 
 const API_URL = "http://localhost:5000/api/auth/login";
 
@@ -35,8 +36,14 @@ const LoginPage = () => {
         return;
       }
 
-      // ✅ Success — persist token and redirect to admin
       localStorage.setItem("astoix_token", data.token);
+      if (data.user) {
+        setStoredUser({
+          userName: data.user.userName,
+          userEmail: data.user.userEmail,
+          userType: data.user.userType,
+        });
+      }
       navigate("/admin");
     } catch {
       setError("Cannot reach server. Please try again.");

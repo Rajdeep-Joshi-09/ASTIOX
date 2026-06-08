@@ -25,6 +25,75 @@ model Category {
   created_date  DateTime  @default(now())
   modify_date   DateTime?
   delete_date   DateTime?
+  products      Product[]
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  user_name    String
+  user_email   String    @unique
+  user_type    String
+  password     String
+  is_status    Int       @default(1)
+  is_delete    Int       @default(0)
+  created_date DateTime  @default(now())
+  modify_date  DateTime?
+  delete_date  DateTime?
+}
+
+model Collection {
+  id              Int       @id @default(autoincrement())
+  collection_type String
+  input_field     String
+  is_status       Int       @default(1)
+  is_delete       Int       @default(0)
+  created_date    DateTime  @default(now())
+  modify_date     DateTime?
+  delete_date     DateTime?
+  products        Product[]
+}
+
+model Product {
+  id                  Int        @id @default(autoincrement())
+  product_name        String
+  product_description String?
+  product_image       String?
+  category_id         Int
+  collection_id       Int
+  is_status           Int        @default(1)
+  is_delete           Int        @default(0)
+  created_date        DateTime   @default(now())
+  modify_date         DateTime?
+  delete_date         DateTime?
+  category            Category   @relation(fields: [category_id], references: [id])
+  collection          Collection @relation(fields: [collection_id], references: [id])
+}
+
+model Menu {
+  id                Int                  @id @default(autoincrement())
+  menu_name         String
+  menu_key          String               @unique
+  menu_path         String
+  icon              String?
+  sort_order        Int                  @default(0)
+  is_developer_only Int                  @default(0)
+  is_status         Int                  @default(1)
+  is_delete         Int                  @default(0)
+  created_date      DateTime             @default(now())
+  modify_date       DateTime?
+  delete_date       DateTime?
+  rolePermissions   RoleMenuPermission[]
+}
+
+model RoleMenuPermission {
+  id           Int      @id @default(autoincrement())
+  user_type    String
+  menu_id      Int
+  can_access   Int      @default(1)
+  created_date DateTime @default(now())
+  menu         Menu     @relation(fields: [menu_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_type, menu_id])
 }
 
 model Admin {

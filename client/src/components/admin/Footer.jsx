@@ -1,20 +1,9 @@
-const Footer = () => {
-  return (
-    <footer className="h-10 bg-white border-t border-gray-200 flex items-center px-5 justify-between shrink-0">
-      <p className="text-xs text-gray-400">ASTIOX Admin © 2026</p>
-      <div className="flex gap-4">
-        <span className="text-xs text-gray-400 cursor-pointer hover:text-gray-600">
-          Help
-        </span>
-        <span className="text-xs text-gray-400 cursor-pointer hover:text-gray-600">
-          Docs
-        </span>
-        <span className="text-xs text-gray-400 cursor-pointer hover:text-gray-600">
-          Logout
-        </span>
-      </div>
-    </footer>
-  );
-};
+const Footer = () => (
+  <footer className="h-10 border-t border-border bg-card/50 flex items-center justify-center px-4 shrink-0">
+    <p className="text-[11px] text-muted-foreground">
+      © {new Date().getFullYear()} ASTIOX Admin Panel
+    </p>
+  </footer>
+);
 
 export default Footer;
