@@ -1,28 +1,31 @@
+import { Link } from "react-router-dom";
+
 const StoreFooter = () => (
-  <footer className="bg-[#232f3e] text-[#ddd] mt-auto">
-    <div className="max-w-[1500px] mx-auto px-4 py-10">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm">
-        <div>
-          <p className="font-semibold text-white mb-2">ASTIOX</p>
-          <p className="text-[#999] leading-relaxed text-xs">
-            A curated product catalog. Browse by category or collection to find what you need.
-          </p>
+  <footer className="mt-auto">
+    <div className="bg-store-surface border-t border-store-border transition-colors duration-300">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] uppercase tracking-[0.15em] text-store-muted text-center sm:text-left">
+        <Link
+          to="/"
+          className="font-serif text-sm tracking-[0.12em] text-store-fg normal-case"
+        >
+          ASTIOX
+        </Link>
+
+        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8">
+          <span className="hover:text-store-fg transition-colors cursor-pointer">
+            Terms
+          </span>
+          <span className="hover:text-store-fg transition-colors cursor-pointer">
+            Privacy
+          </span>
+          <span className="hover:text-store-fg transition-colors cursor-pointer">
+            Inquire
+          </span>
         </div>
-        <div>
-          <p className="font-semibold text-white mb-2">Browse</p>
-          <ul className="space-y-1 text-xs text-[#999]">
-            <li>All Products</li>
-            <li>By Category</li>
-            <li>By Collection</li>
-          </ul>
-        </div>
-        <div>
-          <p className="font-semibold text-white mb-2">Support</p>
-          <p className="text-xs text-[#999]">Contact your account manager for inquiries.</p>
-        </div>
-      </div>
-      <div className="border-t border-[#3a4553] mt-8 pt-6 text-center text-xs text-[#999]">
-        © {new Date().getFullYear()} ASTIOX. All rights reserved.
+
+        <p className="text-store-subtle normal-case tracking-normal text-[10px]">
+          © {new Date().getFullYear()} ASTIOX Gallery. All rights reserved.
+        </p>
       </div>
     </div>
   </footer>

@@ -11,58 +11,39 @@ const ImageGallery = ({ images = [], productName }) => {
 
   if (!urls.length) {
     return (
-      <div className="aspect-square bg-[#f7f7f7] border border-[#ddd] rounded flex items-center justify-center text-[#888] text-sm">
+      <div className="aspect-[4/5] sm:aspect-[3/4] bg-store-surface-2 flex items-center justify-center text-store-faint text-sm">
         No image available
       </div>
     );
   }
 
   return (
-    <div className="flex gap-3">
+    <div className="w-full min-w-0">
+      <div className="aspect-[4/5] sm:aspect-[3/4] bg-store-surface-2 overflow-hidden">
+        <img
+          src={urls[active]}
+          alt={productName}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
       {urls.length > 1 && (
-        <div className="hidden sm:flex flex-col gap-2 w-14 shrink-0">
+        <div className="flex gap-2 sm:gap-3 mt-3 sm:mt-4 overflow-x-auto pb-1 -mx-1 px-1">
           {urls.map((src, i) => (
             <button
               key={i}
               type="button"
               onClick={() => setActive(i)}
               className={cn(
-                "aspect-square rounded border-2 overflow-hidden bg-white p-0.5 transition-all",
-                active === i ? "border-[#c7511f] shadow-sm" : "border-[#ddd] hover:border-[#999]"
+                "w-16 h-16 sm:w-20 sm:h-20 shrink-0 overflow-hidden bg-store-surface-2 transition-opacity",
+                active === i ? "opacity-100 ring-1 ring-store-fg" : "opacity-50 hover:opacity-80"
               )}
             >
-              <img src={src} alt="" className="w-full h-full object-contain" />
+              <img src={src} alt="" className="w-full h-full object-cover" />
             </button>
           ))}
         </div>
       )}
-
-      <div className="flex-1 min-w-0">
-        <div className="aspect-square bg-white border border-[#ddd] rounded-lg overflow-hidden flex items-center justify-center p-4">
-          <img
-            src={urls[active]}
-            alt={productName}
-            className="max-w-full max-h-full object-contain"
-          />
-        </div>
-        {urls.length > 1 && (
-          <div className="flex sm:hidden gap-2 mt-3 overflow-x-auto pb-1">
-            {urls.map((src, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setActive(i)}
-                className={cn(
-                  "w-14 h-14 shrink-0 rounded border-2 overflow-hidden bg-white",
-                  active === i ? "border-[#c7511f]" : "border-[#ddd]"
-                )}
-              >
-                <img src={src} alt="" className="w-full h-full object-contain" />
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
     </div>
   );
 };

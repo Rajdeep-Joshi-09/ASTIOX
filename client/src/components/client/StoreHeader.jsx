@@ -1,37 +1,103 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Menu, Search, X } from "lucide-react";
+import StoreThemeToggle from "@/components/client/StoreThemeToggle";
+import { cn } from "@/lib/utils";
 
-const StoreHeader = () => (
-  <header className="bg-[#131921] text-white">
-    <div className="max-w-[1500px] mx-auto px-4 h-14 flex items-center gap-6">
-      <Link to="/" className="shrink-0 flex items-baseline gap-1 group">
-        <span className="text-xl font-bold tracking-tight group-hover:text-[#febd69] transition-colors">
+const NAV_LINKS = [
+  { to: "/", label: "Catalog", match: (path) => path === "/" || path.startsWith("/product/") },
+  { to: "/collections", label: "Collections", match: (path) => path === "/collections" },
+  { to: "/about", label: "About", match: (path) => path === "/about" },
+];
+
+const StoreHeader = () => {
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <header className="border-b border-store-border bg-store-bg sticky top-0 z-50 transition-colors duration-300">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 h-14 sm:h-16 flex items-center gap-4">
+        <Link
+          to="/"
+          className="font-serif text-lg sm:text-xl tracking-[0.12em] text-store-fg shrink-0"
+        >
           ASTIOX
-        </span>
-      </Link>
-
-      <nav className="hidden md:flex items-center gap-5 text-sm text-[#ccc]">
-        <Link to="/" className="hover:text-white transition-colors">
-          All Products
         </Link>
-      </nav>
 
-      <div className="flex-1" />
+        <nav className="hidden md:flex flex-1 items-center justify-center gap-8 lg:gap-10">
+          {NAV_LINKS.map(({ to, label, match }) => (
+            <Link
+              key={label}
+              to={to}
+              className={cn(
+                "text-[11px] uppercase tracking-[0.18em] text-store-fg transition-opacity hover:opacity-60",
+                match(location.pathname) && "underline underline-offset-4"
+              )}
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
 
-      <Link
-        to="/admin/login"
-        className="text-sm text-[#ccc] hover:text-white border border-[#848688] rounded px-3 py-1.5 transition-colors"
-      >
-        Admin
-      </Link>
-    </div>
-    <div className="bg-[#232f3e] text-[#ccc] text-xs">
-      <div className="max-w-[1500px] mx-auto px-4 py-2 flex items-center gap-2">
-        <span className="text-white font-medium">Shop</span>
-        <span className="text-[#666]">›</span>
-        <span>Product Catalog</span>
+        <div className="flex items-center gap-4 sm:gap-5 ml-auto">
+          <button
+            type="button"
+            aria-label="Search"
+            className="hidden sm:block text-store-fg hover:opacity-60 transition-opacity"
+          >
+            <Search className="w-[18px] h-[18px] stroke-[1.5]" />
+          </button>
+
+          <StoreThemeToggle />
+
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            className="md:hidden text-store-fg"
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            {menuOpen ? (
+              <X className="w-5 h-5 stroke-[1.5]" />
+            ) : (
+              <Menu className="w-5 h-5 stroke-[1.5]" />
+            )}
+          </button>
+
+          <Link
+            to="/admin/login"
+            className="hidden md:inline text-[10px] uppercase tracking-[0.15em] text-store-subtle hover:text-store-fg transition-colors"
+          >
+            Admin
+          </Link>
+        </div>
       </div>
-    </div>
-  </header>
-);
+
+      {menuOpen && (
+        <nav className="md:hidden border-t border-store-border px-4 sm:px-6 py-5 flex flex-col gap-4 bg-store-bg">
+          {NAV_LINKS.map(({ to, label, match }) => (
+            <Link
+              key={label}
+              to={to}
+              onClick={() => setMenuOpen(false)}
+              className={cn(
+                "text-xs uppercase tracking-[0.18em] text-store-fg",
+                match(location.pathname) && "underline underline-offset-4"
+              )}
+            >
+              {label}
+            </Link>
+          ))}
+          <Link
+            to="/admin/login"
+            onClick={() => setMenuOpen(false)}
+            className="text-xs uppercase tracking-[0.15em] text-store-subtle"
+          >
+            Admin
+          </Link>
+        </nav>
+      )}
+    </header>
+  );
+};
 
 export default StoreHeader;

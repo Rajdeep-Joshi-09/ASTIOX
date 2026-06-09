@@ -2,55 +2,83 @@ import { Link } from "react-router-dom";
 import { imageUrl } from "@/lib/publicApi";
 import { cn } from "@/lib/utils";
 
-const ProductCard = ({ product, compact = false, className }) => {
+const ASPECT_PATTERNS = [
+  "aspect-square",
+  "aspect-[3/5]",
+  "aspect-[4/5]",
+  "aspect-[5/4]",
+  "aspect-square",
+  "aspect-[5/4]",
+];
+
+const ProductCard = ({ product, compact = false, index = 0, className }) => {
   const img = imageUrl(
     product.images?.[0]?.imagePath || product.productImage
   );
+  const aspect = ASPECT_PATTERNS[index % ASPECT_PATTERNS.length];
+
+  if (compact) {
+    return (
+      <Link
+        to={`/product/${product.id}`}
+        className={cn("group block", className)}
+      >
+        <div className="aspect-square bg-store-surface-2 overflow-hidden mb-3">
+          {img ? (
+            <img
+              src={img}
+              alt={product.productName}
+              className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-xs text-store-faint">
+              No image
+            </div>
+          )}
+        </div>
+        <h3 className="font-serif text-sm text-store-fg leading-snug group-hover:opacity-60 transition-opacity line-clamp-2">
+          {product.productName}
+        </h3>
+      </Link>
+    );
+  }
 
   return (
     <Link
       to={`/product/${product.id}`}
-      className={cn(
-        "group flex flex-col bg-white border border-[#ddd] rounded-lg overflow-hidden hover:shadow-md transition-shadow h-full",
-        compact ? "p-2" : "p-3",
-        className
-      )}
+      className={cn("group block break-inside-avoid", className)}
     >
       <div
         className={cn(
-          "bg-[#f7f7f7] rounded flex items-center justify-center overflow-hidden",
-          compact ? "aspect-square mb-2" : "aspect-square mb-3"
+          "bg-store-surface-2 overflow-hidden mb-3 sm:mb-4",
+          aspect,
+          index % 2 === 1 && "sm:mt-12 md:mt-20"
         )}
       >
         {img ? (
           <img
             src={img}
             alt={product.productName}
-            className="max-w-full max-h-full object-contain p-2 group-hover:scale-[1.02] transition-transform duration-300"
+            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700"
             loading="lazy"
           />
         ) : (
-          <span className="text-xs text-[#888]">No image</span>
+          <div className="w-full h-full flex items-center justify-center text-xs text-store-faint">
+            No image
+          </div>
         )}
       </div>
 
-      <div className="flex flex-col flex-1 min-w-0">
-        <h3
-          className={cn(
-            "text-[#0f1111] leading-snug group-hover:text-[#c7511f] transition-colors line-clamp-2",
-            compact ? "text-xs" : "text-sm"
-          )}
-        >
-          {product.productName}
-        </h3>
-        {!compact && product.categoryName && (
-          <p className="text-xs text-[#565959] mt-1.5">{product.categoryName}</p>
-        )}
-        {!compact && product.collectionType && (
-          <p className="text-[11px] text-[#007185] mt-auto pt-2">
-            {product.collectionType}
+      <div className="space-y-1">
+        {product.categoryName && (
+          <p className="text-[10px] uppercase tracking-[0.2em] text-store-subtle">
+            {product.categoryName}
           </p>
         )}
+        <h3 className="font-serif text-base sm:text-lg text-store-fg leading-snug group-hover:opacity-60 transition-opacity">
+          {product.productName}
+        </h3>
       </div>
     </Link>
   );
