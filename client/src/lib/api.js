@@ -55,8 +55,6 @@ export const apiUpload = async (path, formData, method = "POST") => {
   return data;
 };
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-
 // ✅ Fix imageUrl to use the same base
 export const imageUrl = (filePath) => {
   if (!filePath) return null;
