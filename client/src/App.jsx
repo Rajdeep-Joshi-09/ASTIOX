@@ -22,7 +22,7 @@ import ProductForm from "./pages/admin/ProductForm";
 import MenuMasterList from "./pages/admin/MenuMasterList";
 import MenuMasterForm from "./pages/admin/MenuMasterForm";
 import RoleRights from "./pages/admin/RoleRights";
-
+console.log(import.meta.env.VITE_API_URL);
 const App = () => {
   return (
     <BrowserRouter>
