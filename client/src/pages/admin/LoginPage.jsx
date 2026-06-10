@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { setStoredUser } from "@/lib/api";
 
-const API_URL = "http://localhost:5000/api/auth/login";
+const API_URL = `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/auth/login`;
 
 const LoginPage = () => {
   const navigate = useNavigate();

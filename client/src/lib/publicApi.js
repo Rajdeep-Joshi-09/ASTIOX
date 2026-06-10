@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000/api/public";
+const API_BASE = `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/public`;
 
 export const publicFetch = async (path) => {
   const res = await fetch(`${API_BASE}${path}`);
