@@ -1,34 +1,22 @@
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-const UPLOAD_DIR = "D:/ASTIOX/uploads/products";
-
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
-  filename: (_req, file, cb) => {
-    const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${unique}${path.extname(file.originalname)}`);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "astiox/products",
+    allowed_formats: ["jpeg", "jpg", "png", "gif", "webp"],
+    transformation: [{ width: 1200, height: 1200, crop: "limit" }],
   },
 });
 
 const fileFilter = (_req, file, cb) => {
   const allowed = /jpeg|jpg|png|gif|webp/;
-  const ext = allowed.test(path.extname(file.originalname).toLowerCase());
   const mime = allowed.test(file.mimetype);
-  if (ext && mime) return cb(null, true);
+  if (mime) return cb(null, true);
   cb(new Error("Only image files are allowed"));
 };
-
-const uploadProductImage = multer({
-  storage,
-  fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
-});
 
 const uploadProductImages = multer({
   storage,
@@ -36,4 +24,4 @@ const uploadProductImages = multer({
   limits: { fileSize: 5 * 1024 * 1024, files: 12 },
 });
 
-module.exports = { uploadProductImage, uploadProductImages, UPLOAD_DIR };
+module.exports = { uploadProductImages };
