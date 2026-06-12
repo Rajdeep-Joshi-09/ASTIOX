@@ -58,6 +58,9 @@ export const apiUpload = async (path, formData, method = "POST") => {
 // ✅ Fix imageUrl to use the same base
 export const imageUrl = (filePath) => {
   if (!filePath) return null;
+  // Cloudinary URLs — return as-is
+  if (/^https?:\/\//i.test(filePath)) return filePath;
+  // Fallback for old local paths
   const filename = filePath.split("/").pop().split("\\").pop();
   const base =
     import.meta.env.VITE_API_URL?.replace("/api", "") ||
