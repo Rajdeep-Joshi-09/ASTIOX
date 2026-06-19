@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import logo from "../../assets/logo.png"
 
 const StoreFooter = () => (
   <footer className="mt-auto">
@@ -8,7 +9,9 @@ const StoreFooter = () => (
           to="/"
           className="font-serif text-sm tracking-[0.12em] text-store-fg normal-case"
         >
-          ASTIOX
+           <div className="h-15 w-35 overflow-hidden">
+                    <img src={logo} className="h-full w-full object-contain"/>
+                    </div>
         </Link>
 
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8">

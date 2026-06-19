@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, Search, X } from "lucide-react";
 import StoreThemeToggle from "@/components/client/StoreThemeToggle";
 import { cn } from "@/lib/utils";
+import logo from "../../assets/logo.png"
 
 const NAV_LINKS = [
   { to: "/", label: "Catalog", match: (path) => path === "/" || path.startsWith("/product/") },
@@ -21,7 +22,9 @@ const StoreHeader = () => {
           to="/"
           className="font-serif text-lg sm:text-xl tracking-[0.12em] text-store-fg shrink-0"
         >
-          ASTIOX
+          <div className="h-15 w-35 overflow-hidden">
+          <img src={logo} className="h-full w-full object-contain"/>
+          </div>
         </Link>
 
         <nav className="hidden md:flex flex-1 items-center justify-center gap-8 lg:gap-10">
