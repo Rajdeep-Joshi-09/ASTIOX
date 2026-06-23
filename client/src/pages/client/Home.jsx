@@ -35,8 +35,7 @@ const Home = () => {
     if (category || collection) setFiltersOpen(true);
   }, [searchParams]);
 
-  const activeFilterCount =
-    (activeCategory ? 1 : 0) + (activeCollection ? 1 : 0);
+  const activeFilterCount = activeCategory ? 1 : 0;
 
   const loadFilters = useCallback(async () => {
     try {
@@ -57,7 +56,7 @@ const Home = () => {
       setError("");
       const res = await getPublicProducts({
         categoryId: activeCategory || undefined,
-        collectionId: activeCollection || undefined,
+        collectionId: undefined, // Collection filters disabled on frontend
       });
       setProducts(res.data || []);
     } catch (err) {
@@ -66,7 +65,7 @@ const Home = () => {
     } finally {
       setLoading(false);
     }
-  }, [activeCategory, activeCollection]);
+  }, [activeCategory]);
 
   useEffect(() => {
     loadFilters();
@@ -88,7 +87,7 @@ const Home = () => {
           Curated Excellence.
         </h1>
         <p className="mt-4 sm:mt-6 text-sm md:text-[15px] text-store-muted leading-relaxed max-w-xl mx-auto px-2">
-          A sanctuary for the discerning eye. Explore a collection of objects
+          A sanctuary for the discerning eye. Explore a catalog of objects
           defined by uncompromising craft and timeless silhouette.
         </p>
       </section>
@@ -156,7 +155,7 @@ const Home = () => {
                 <p className="text-sm text-store-subtle mt-3">
                   Adjust your filters or explore the full catalog.
                 </p>
-                {(activeCategory || activeCollection) && (
+                {activeCategory && (
                   <button
                     type="button"
                     onClick={clearFilters}
@@ -167,13 +166,12 @@ const Home = () => {
                 )}
               </div>
             ) : (
-              <div className="columns-1 sm:columns-2 gap-x-6 sm:gap-x-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12">
                 {products.map((product, i) => (
                   <ProductCard
                     key={product.id}
                     product={product}
                     index={i}
-                    className="mb-8 sm:mb-12"
                   />
                 ))}
               </div>
@@ -181,7 +179,7 @@ const Home = () => {
           </div>
         </div>
 
-        {!loading && products.length > 0 && (activeCategory || activeCollection) && (
+        {!loading && products.length > 0 && activeCategory && (
           <div className="mt-6 sm:mt-8 flex justify-center px-4">
             <button
               type="button"

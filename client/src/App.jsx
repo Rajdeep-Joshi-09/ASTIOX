@@ -5,7 +5,7 @@ import AdminLayout from "./layout/admin/AdminLayout";
 import AdminHome from "./pages/admin/AdminHome";
 import Home from "./pages/client/Home";
 import ProductDetail from "./pages/client/ProductDetail";
-import Collections from "./pages/client/Collections";
+// import Collections from "./pages/client/Collections";
 import About from "./pages/client/About";
 import LoginPage from "./pages/admin/LoginPage";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
@@ -29,7 +29,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<ClientLayout />}>
           <Route index element={<Home />} />
-          <Route path="collections" element={<Collections />} />
+          {/* <Route path="collections" element={<Collections />} /> */}
           <Route path="about" element={<About />} />
           <Route path="product/:id" element={<ProductDetail />} />
         </Route>

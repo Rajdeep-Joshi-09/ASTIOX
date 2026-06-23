@@ -9,7 +9,7 @@ const FilterBar = ({
   onCategoryChange,
   onCollectionChange,
 }) => {
-  const hasFilters = activeCategory || activeCollection;
+  const hasFilters = !!activeCategory;
 
   return (
     <div className="space-y-8 sm:space-y-10">
@@ -48,6 +48,7 @@ const FilterBar = ({
         </ul>
       </div>
 
+      {/* 
       <div>
         <p className="text-[10px] uppercase tracking-[0.2em] text-store-subtle mb-4 sm:mb-5">
           Collection
@@ -83,13 +84,14 @@ const FilterBar = ({
           ))}
         </ul>
       </div>
+      */}
 
       {hasFilters && (
         <button
           type="button"
           onClick={() => {
             onCategoryChange("");
-            onCollectionChange("");
+            if (onCollectionChange) onCollectionChange("");
           }}
           className="flex items-center gap-2 text-[11px] uppercase tracking-[0.15em] text-store-subtle hover:text-store-fg transition-colors"
         >

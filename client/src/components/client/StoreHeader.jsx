@@ -7,7 +7,7 @@ import logo from "../../assets/logo.png"
 
 const NAV_LINKS = [
   { to: "/", label: "Catalog", match: (path) => path === "/" || path.startsWith("/product/") },
-  { to: "/collections", label: "Collections", match: (path) => path === "/collections" },
+  // { to: "/collections", label: "Collections", match: (path) => path === "/collections" },
   { to: "/about", label: "About", match: (path) => path === "/about" },
 ];
 

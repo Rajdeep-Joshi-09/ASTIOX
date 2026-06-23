@@ -64,12 +64,14 @@ const ProductDetail = () => {
 
   const specs = [
     product.categoryName && { label: "Category", value: product.categoryName },
+    /*
     product.collectionType && {
       label: "Collection",
       value: product.collectionLabel
         ? `${product.collectionType} (${product.collectionLabel})`
         : product.collectionType,
     },
+    */
   ].filter(Boolean);
 
   return (
@@ -155,7 +157,7 @@ const ProductDetail = () => {
                 to="/"
                 className="text-xs uppercase tracking-[0.15em] text-store-fg underline underline-offset-4 hover:opacity-60 transition-opacity"
               >
-                Explore the Collection
+                Explore the Catalog
               </Link>
             </div>
 

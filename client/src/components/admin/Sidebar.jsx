@@ -19,9 +19,11 @@ const Sidebar = () => {
       </div>
 
       <nav className="flex-1 px-3 py-4 overflow-y-auto space-y-0.5">
-        {menus.map((item) => {
-          const Icon = getMenuIcon(item.icon);
-          return (
+        {menus
+          .filter((item) => item.menuKey !== "collection" && item.menuKey !== "menu-master")
+          .map((item) => {
+            const Icon = getMenuIcon(item.icon);
+            return (
             <NavLink
               key={item.menuKey}
               to={item.menuPath}
