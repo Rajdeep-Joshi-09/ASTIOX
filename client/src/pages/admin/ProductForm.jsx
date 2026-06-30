@@ -22,22 +22,19 @@ const ProductForm = () => {
   const [productName, setProductName] = useState("");
   const [productDescription, setProductDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
-  const [collectionId, setCollectionId] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [existingImages, setExistingImages] = useState([]);
   const [removeImageIds, setRemoveImageIds] = useState([]);
   const [newFiles, setNewFiles] = useState([]);
   const [newPreviews, setNewPreviews] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    Promise.all([apiFetch("/category"), apiFetch("/collection")])
-      .then(([catRes, colRes]) => {
+    apiFetch("/category")
+      .then((catRes) => {
         setCategories(catRes.data || []);
-        setCollections(colRes.data || []);
       })
       .catch((err) => setError(err.message));
   }, []);
@@ -50,7 +47,6 @@ const ProductForm = () => {
         setProductName(item.productName);
         setProductDescription(item.productDescription || "");
         setCategoryId(String(item.categoryId));
-        setCollectionId(String(item.collectionId));
         setIsActive(item.isStatus === 1 || item.isStatus === "Active");
         setExistingImages(item.images || []);
       })
@@ -93,7 +89,6 @@ const ProductForm = () => {
       formData.append("productName", productName);
       formData.append("productDescription", productDescription);
       formData.append("categoryId", categoryId);
-      formData.append("collectionId", collectionId);
       formData.append("isStatus", isActive ? "1" : "0");
       newFiles.forEach((file) => formData.append("productImages", file));
       if (isEdit && removeImageIds.length) {
@@ -112,7 +107,7 @@ const ProductForm = () => {
   return (
     <PageShell
       title={isEdit ? "Edit Product" : "Add Product"}
-      description="Rich description with tables, multiple images, category & collection"
+      description="Rich description with tables, multiple images, and category"
       action={
         <Button variant="outline" asChild>
           <Link to="/admin/products">Back</Link>
@@ -202,25 +197,14 @@ const ProductForm = () => {
               </label>
             </div>
 
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="categoryId">Category</Label>
-                <SelectField id="categoryId" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
-                  <option value="">Select category</option>
-                  {categories.map((c) => (
-                    <option key={c.id} value={c.id}>{c.categoryName}</option>
-                  ))}
-                </SelectField>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="collectionId">Collection</Label>
-                <SelectField id="collectionId" value={collectionId} onChange={(e) => setCollectionId(e.target.value)} required>
-                  <option value="">Select collection</option>
-                  {collections.map((c) => (
-                    <option key={c.id} value={c.id}>{c.collectionType} — {c.inputField}</option>
-                  ))}
-                </SelectField>
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="categoryId">Category</Label>
+              <SelectField id="categoryId" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
+                <option value="">Select category</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>{c.categoryName}</option>
+                ))}
+              </SelectField>
             </div>
 
             <StatusToggle active={isActive} onChange={setIsActive} />

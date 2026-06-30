@@ -59,14 +59,14 @@ model Product {
   product_description String?
   product_image       String?
   category_id         Int
-  collection_id       Int
+  collection_id       Int?
   is_status           Int            @default(1)
   is_delete           Int            @default(0)
   created_date        DateTime       @default(now())
   modify_date         DateTime?
   delete_date         DateTime?
   category            Category       @relation(fields: [category_id], references: [id])
-  collection          Collection     @relation(fields: [collection_id], references: [id])
+  collection          Collection?    @relation(fields: [collection_id], references: [id])
   images              ProductImage[]
 }
 

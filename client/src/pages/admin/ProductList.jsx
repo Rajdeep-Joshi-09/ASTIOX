@@ -45,16 +45,15 @@ const ProductList = () => {
               <th className="text-left px-4 py-3 font-medium text-muted-foreground">Image</th>
               <th className="text-left px-4 py-3 font-medium text-muted-foreground">Name</th>
               <th className="text-left px-4 py-3 font-medium text-muted-foreground">Category</th>
-              <th className="text-left px-4 py-3 font-medium text-muted-foreground">Collection</th>
               <th className="text-left px-4 py-3 font-medium text-muted-foreground">Status</th>
               <th className="text-right px-4 py-3 font-medium text-muted-foreground">Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">Loading...</td></tr>
+              <tr><td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">Loading...</td></tr>
             ) : products.length === 0 ? (
-              <tr><td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">No products found</td></tr>
+              <tr><td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">No products found</td></tr>
             ) : (
               products.map((item) => (
                 <tr key={item.id} className="border-b border-border/50 hover:bg-muted/30">
@@ -74,7 +73,6 @@ const ProductList = () => {
                   </td>
                   <td className="px-4 py-3 font-medium">{item.productName}</td>
                   <td className="px-4 py-3 text-muted-foreground">{item.categoryName}</td>
-                  <td className="px-4 py-3 text-muted-foreground">{item.collectionType}</td>
                   <td className="px-4 py-3"><StatusBadge active={item.isStatus === "Active"} /></td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-2">

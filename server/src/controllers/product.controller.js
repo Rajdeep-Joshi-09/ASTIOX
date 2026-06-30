@@ -25,6 +25,14 @@ function validateId(value, label) {
   return id;
 }
 
+function parseCollectionId(value) {
+  if (value === undefined || value === null || value === "" || value === "null" || value === "undefined") {
+    return null;
+  }
+  const num = Number(value);
+  return (Number.isNaN(num) || num <= 0) ? null : num;
+}
+
 const mapProduct = (item) => ({
   id: item.id,
   productName: item.product_name,
@@ -71,7 +79,7 @@ const createProduct = async (req, res) => {
         product_name: validateProductName(productName),
         product_description: productDescription || null,
         category_id: validateId(categoryId, "Category"),
-        collection_id: validateId(collectionId, "Collection"),
+        collection_id: parseCollectionId(collectionId),
         is_status: isStatus !== undefined ? Number(isStatus) : 1,
       },
       imagePaths
@@ -142,7 +150,7 @@ const updateProduct = async (req, res) => {
         product_name: validateProductName(productName),
         product_description: productDescription || null,
         category_id: validateId(categoryId, "Category"),
-        collection_id: validateId(collectionId, "Collection"),
+        collection_id: parseCollectionId(collectionId),
         is_status: Number(isStatus),
       },
       { newImagePaths, removeImageIds: removeIds }
