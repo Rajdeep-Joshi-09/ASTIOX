@@ -33,7 +33,7 @@ const getPublicProducts = async ({ categoryId, collectionId } = {}) => {
   return prisma.Product.findMany({
     where,
     include: productInclude,
-    orderBy: { id: "desc" },
+    orderBy: { id: "asc" },
   });
 };
 

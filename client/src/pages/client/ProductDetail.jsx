@@ -92,9 +92,7 @@ const ProductDetail = () => {
           />
 
           <div className="lg:pt-4 min-w-0">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-store-subtle mb-3 sm:mb-4">
-              Edition No. {editionNo}
-            </p>
+
 
             <h1 className="font-serif text-2xl sm:text-3xl md:text-4xl text-store-fg font-normal leading-tight">
               {product.productName}
