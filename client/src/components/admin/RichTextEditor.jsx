@@ -99,7 +99,12 @@ const RichTextEditor = ({ value, onChange, placeholder }) => {
         editor={ClassicEditor}
         config={editorConfig}
         data={value || ""}
-        onChange={(_event, editor) => onChange(editor.getData())}
+        onChange={(_event, editor) => {
+          const data = editor.getData();
+          if (data !== (value || "")) {
+            onChange(data);
+          }
+        }}
       />
     </div>
   );
